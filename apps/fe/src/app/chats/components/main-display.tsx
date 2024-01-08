@@ -1,3 +1,4 @@
+"use client"
 import addDays from "date-fns/addDays";
 import addHours from "date-fns/addHours";
 import format from "date-fns/format";
@@ -60,7 +61,6 @@ export function MailDisplay({ mail }: any) {
               </Avatar>
               <div className="grid gap-1">
                 <div className="font-semibold">{mail.name}</div>
-                <div className="line-clamp-1 text-xs">{mail.subject}</div>
                 <div className="line-clamp-1 text-xs">
                   <span className="font-medium">Reply-To:</span> {mail.email}
                 </div>
@@ -77,23 +77,14 @@ export function MailDisplay({ mail }: any) {
           <Separator className="mt-auto" />
           <div className="p-4">
             <form>
-              <div className="grid gap-4">
+              <div className="flex flex-row justify-center items-center">
                 <Textarea
                   className="p-4"
                   placeholder={`Reply ${mail.name}...`}
                 />
-                <div className="flex items-center">
-                  <Label
-                    htmlFor="mute"
-                    className="flex items-center gap-2 text-xs font-normal"
-                  >
-                    <Switch id="mute" aria-label="Mute thread" /> Mute this
-                    thread
-                  </Label>
-                  <Button size="sm" className="ml-auto">
+                  <Button size="sm" className="ml-9">
                     Send
                   </Button>
-                </div>
               </div>
             </form>
           </div>

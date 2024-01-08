@@ -1,6 +1,12 @@
+
 import type { NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient('https://ilsphosyotjetmkjcsnf.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlsc3Bob3N5b3RqZXRta2pjc25mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ1MTQ5MzUsImV4cCI6MjAyMDA5MDkzNX0.Pv0x6T00bUOqeFeK32_8yvWTQAw0zzSibAi7XO4V6_E')
+
 
 export const options: NextAuthOptions = {
   providers: [
@@ -11,21 +17,30 @@ export const options: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        email: { label: "email", type: "text", placeholder: "jsmith@gmail.com" },
+        name: { label: "Name", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const user = { id: "1", name: "ali", password: "ali123" };
-        if (
-          credentials?.username == user.name &&
-          credentials.password == user.password
-        ) {
-          return user;
-        } else {
-          return null;
+        const {data} = await supabase.from("USERS").select().eq("email", credentials?.email)
+        let userData = {data}.data![0];
+        if (data?.length == 0) {
+          const { data ,error } = await supabase
+          .from('USERS')
+          .insert({ email: credentials?.email, password: credentials?.password, name : credentials?.name, image: "https://img.analisa.io/tiktok/profile/7031003225021875205.png"}).select()
+          userData = data![0]
         }
+        let user;
+        if (credentials?.password == userData.password) {
+          user = { id: Math.floor(Math.random()*100).toString(), email: userData.email, password: credentials?.password, image: userData.image };
+        } else {
+          user = {id: Math.floor(Math.random()*100).toString(), email: "invalid", password: "invalid", image: "invalid"}
+        }
+        return user;
       },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
 };
+
+
