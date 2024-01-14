@@ -11,7 +11,7 @@ export const WebSocketProvider = ({ children }: any) => {
   const [webSocket, setWebSocket] = useState<any>(null);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:3004");
+    const socket = new WebSocket("ws://ec2-35-180-47-148.eu-west-3.compute.amazonaws.com:3004");
     console.log("socket");
     console.log(socket);
     setWebSocket(socket);

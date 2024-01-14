@@ -49,7 +49,7 @@ export function MailDisplay({ mail }: any) {
   
   async function fetchMessages() {
     if (mail) {
-      const res = await axios.post("ec2-35-180-47-148.eu-west-3.compute.amazonaws.com:3004/messages", {
+      const res = await axios.post("http://ec2-35-180-47-148.eu-west-3.compute.amazonaws.com:3004/messages", {
         id: mail.chat_id.id
       })
       const data = await res.data;
