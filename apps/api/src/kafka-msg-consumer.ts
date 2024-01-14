@@ -18,7 +18,7 @@ export class KafkaHandler {
   private admin: Admin;
   private static instance: KafkaHandler;
   private config = {
-    brokers: ["host.docker.internal:29092"]
+    brokers: ['kafka1:19092'],
   };
   private consumerGroup = "userId1";
   private constructor() {
