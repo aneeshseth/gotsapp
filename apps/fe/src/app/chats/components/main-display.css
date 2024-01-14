@@ -1,0 +1,30 @@
+
+@keyframes fadeInUp {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+  }
+
+@media screen and (max-width: 720px) {
+    .main-text {
+      display: none;
+    }
+    .sub-text-1 {
+        display: none;
+    }
+    .sub-text-2 {
+        display: none;
+    }
+  }
+
+
+  @media screen and (max-width: 670px) {
+    .left-panel {
+        display: none;
+    }
+  }

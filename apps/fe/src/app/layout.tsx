@@ -10,7 +10,7 @@ import {
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
-
+import { WebSocketProvider } from './provider';
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -23,10 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      
         <RecoilRoot>
         <NextAuthProvider>
+        <WebSocketProvider>
           {children}
+          </WebSocketProvider>
           </NextAuthProvider>
           </RecoilRoot>
       </body>

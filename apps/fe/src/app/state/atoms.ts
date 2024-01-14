@@ -5,6 +5,19 @@ export const userState = atom({
     default: {}, 
 });
 
+export const socketState = atom({
+  key: 'socketState', 
+  default: {}, 
+});
+
+export const socketCurrState = selector({
+  key: 'socketCurrState', 
+  get: ({get}) => {
+    const text = get(socketState);
+    return text
+  },
+});
+
 
 export const sessionState = atom({
   key: 'seshstate',

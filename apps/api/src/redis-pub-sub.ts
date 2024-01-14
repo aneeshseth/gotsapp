@@ -1,8 +1,9 @@
 import { RedisClientType } from "redis";
 import { createClient } from "redis";
-
-
-
+const Redis = require("ioredis");
+const redisUri = "rediss://default:AVNS_g3BWXhFIbfNmsNr-o9K@redis-1e99ff70-aneeshseth2018-fa67.a.aivencloud.com:24981"
+const redis = new Redis(redisUri);
+redis
 export class RedisHandler {
   private static instance: RedisHandler;
   private generalClient: RedisClientType;
@@ -10,11 +11,19 @@ export class RedisHandler {
   private publisher: RedisClientType;
   private subscriptions: Map<string, string[]>;
   private reverseSubscriptions: Map<string, { userId: string; ws: any }[]>;
-
   private constructor() {
-    this.subscriber = createClient();
-    this.publisher = createClient();
-    this.generalClient = createClient();
+    this.subscriber = createClient({
+      url: "redis://redis_db:6379",
+    }
+    );
+    this.publisher = createClient({
+      url: "redis://redis_db:6379",
+    }
+    );
+    this.generalClient = createClient({
+      url: "redis://redis_db:6379",
+    }
+    );
     this.publisher.connect();
     this.subscriber.connect();
     this.generalClient.connect();
@@ -42,25 +51,24 @@ export class RedisHandler {
 
   public async addASubscription(roomId: string) {
     const currentSubscriberNumber = await this.generalClient.get(roomId);
-    console.log(currentSubscriberNumber);
-    if (
-      currentSubscriberNumber != null &&
-      Number(currentSubscriberNumber) < 2
-    ) {
+    if (currentSubscriberNumber != null) {
       await this.generalClient.set(roomId, Number(currentSubscriberNumber) + 1);
     } else if (currentSubscriberNumber == null) {
       await this.generalClient.set(roomId, 1);
     }
     const finaldata = await this.generalClient.get(roomId);
-    console.log("finally: ");
-    console.log(finaldata);
+  }
+
+  public async removeASubscription(roomId: string) {
+    const currentSubscriberNumber = await this.generalClient.get(roomId);
+    if (currentSubscriberNumber != null) {
+      await this.generalClient.set(roomId, Number(currentSubscriberNumber) - 1);
+    }
+    const finaldata = await this.generalClient.get(roomId);
   }
 
   public async getNumberOfSubscriptions(roomId: string) {
-    console.log("before of s");
     const currentSubscriberNumber = await this.generalClient.get(roomId);
-    console.log("current s");
-    console.log(currentSubscriberNumber);
     return currentSubscriberNumber;
   }
 
@@ -74,23 +82,75 @@ export class RedisHandler {
       { userId, ws },
     ]);
     await this.subscriber.subscribe(roomId, async (payload: any) => {
+      console.log("RUNNING SUBSCRIBED SERVICE NOW");
       console.log(this.reverseSubscriptions);
       this.reverseSubscriptions
         .get(roomId)
         ?.map((user: { userId: string; ws: any }) => {
-          console.log(payload);
-          if (JSON.parse(payload).senderId != userId)
-            ws.send(JSON.parse(payload).message);
+          if (user.userId === userId) {
+            ws.send(payload);
+          }
         });
     });
+    console.log("number of subs ", await this.generalClient.pubSubNumSub("15"))
+  }
+  public async unsubscribe(userId: string, roomId: string, ws: any) {
+    console.log("unsubscribe function activated.")
+    this.subscriptions.set(
+      userId,
+      this.subscriptions.get(userId)?.filter((id) => id != roomId) || []
+    );
+    this.reverseSubscriptions.set(
+      roomId,
+      this.reverseSubscriptions
+        .get(roomId)
+        ?.filter((user) => user.userId != userId) || []
+    );
+    console.log("unsubscribing from ");
+    console.log("CURRENT REVERSE SUBSCRIPTIONS");
+    console.log(this.reverseSubscriptions);
+   //await this.subscriber.unsubscribe(roomId);
   }
 
-  public sendMessage(roomId: string, message: string, senderId: string) {
+  public async unsubscribeAllRooms(userId: string, ws: any) {
+    const currentdata = this.subscriptions.get(userId);
+    if (currentdata) {
+      this.subscriptions.set(userId, []);
+      console.log("number of subscribers to this event at the moment")
+      console.log(await this.generalClient.pubSubNumSub("15"))
+      const mapThrough = currentdata?.map(async (data) => {
+        this.reverseSubscriptions.set(
+          data,
+          this.reverseSubscriptions
+            .get(data)
+            ?.filter((user) => user.userId != userId) || []
+        );
+        console.log("data")
+        console.log(data)
+        console.log(this.reverseSubscriptions)
+        await this.removeASubscription(data);
+       // await this.subscriber.unsubscribe(data);
+        console.log("number of subscribers to this event at the moment")
+        console.log(await this.generalClient.pubSubNumSub(data))
+      });
+      await Promise.all(mapThrough!);
+      console.log(await this.generalClient.pubSubNumSub("15"))
+    }
+    return;
+  }
+  public sendMessage(
+    roomId: string,
+    message: string,
+    senderId: string,
+    type: string
+  ) {
+    console.log(this.reverseSubscriptions)
     this.publisher.publish(
       roomId,
       JSON.stringify({
         message: message,
         senderId: senderId,
+        type: type,
       })
     );
   }

@@ -14,7 +14,15 @@ import {
   Trash2,
   Users2,
 } from "lucide-react";
-import { CSSProperties } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { CSSProperties, useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from 'axios'
 const override: CSSProperties = {
@@ -27,7 +35,6 @@ import { AccountSwitcher } from "@/app/chats/components/account-switcher";
 import { MailDisplay } from "@/app/chats/components/main-display";
 import { MailList } from "@/app/chats/components/main-list";
 import { Nav } from "@/app/chats/components/nav";
-import { Mail } from "@/app/chats/data";
 import { useMail } from "@/app/chats/use-mail";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
@@ -50,29 +57,31 @@ interface MailProps {
     email: string;
     icon: React.ReactNode;
   }[];
-  mails: Mail[];
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
 }
+import './main-display.css'
 import { useRouter } from "next/navigation";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sessionState, userAppState, userSessionState, userState } from "@/app/state/atoms";
 import { Button } from "@/components/ui/button";
-
+import { useWebSocket } from "@/app/provider";
 
 export function Mail({
   accounts,
-  mails,
   defaultLayout = [265, 440, 655],
   defaultCollapsed = false,
   navCollapsedSize,
 }: MailProps) {
   const { data: session } = useSession();
-  console.log('MY SESSION')
-  console.log(session?.user)
   const router = useRouter()
+  const setTags1 = new Map<String, String>();
+  const setTags2 = new Map<String, String>();
   const [sesh, setSesh] = useRecoilState(sessionState);
+  const webSocket: any = useWebSocket();
+  const [tag1, setTag1] = useState<Map<String, String>>(new Map());
+  const [tag2, setTag2] = useState<Map<String, String>>(new Map());
   const currentSeshState = useRecoilValue<any>(userSessionState)
   if (!session?.user) {
     router.push("/")
@@ -84,7 +93,9 @@ export function Mail({
   }
   const [user, setUser] = useRecoilState(userState);
   const currentUser = useRecoilValue<any>(userAppState);
-  const [chats, setChats] = React.useState([])
+  const [loading, setLoading] = React.useState(true)
+  const [chats, setChats] = React.useState<any>([])
+  const [newPossibleUsers, setNewPossibleUsers] = React.useState<any>([])
   async function fetchUserData() {
     const {data} = await supabase.from("USERS").select().eq("email", session?.user?.email)
     let userData = {data}.data![0];
@@ -98,18 +109,61 @@ export function Mail({
     const res = await axios.post("http://localhost:3004/chats", {
       email: currentSeshState.email
     })
+    console.log(res.data.chats)
+    setLoading(false)
     setChats(res.data.chats)
+    const users = await axios.post("http://localhost:3004/getnew", {
+      email: currentSeshState.email
+    })
+    
+    console.log(users?.data)
+    setNewPossibleUsers(users?.data.users)
+    users?.data.users.map((user: any) =>  {
+      setTags1.set(`${user.email}`, "")
+      setTags2.set(`${user.email}`, "")
+    })
+    setTag1(setTags1)
+    setTag2(setTags2)
   }
+
+  async function createNewChat(email2: string, tag1: string, tag2: string) {
+    if (tag1 == "" || tag2 == "") {
+      alert('please add relevant tags.')
+    } else {
+      await axios.post("http://localhost:3004/createnew", {
+        email1: currentSeshState.email,
+        email2: email2,
+        tag1: tag1,
+        tag2: tag2
+      })
+      setCreatingChat(false)
+      window.location.reload()
+    }
+  }
+
   React.useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 1500)
+
+
     fetchUserData()
+    return () => {
+      if (webSocket) {
+        webSocket.send(
+          JSON.stringify({
+            type: "leaveAllRooms",
+            payload: {
+              userId: currentSeshState.email,
+            },
+          })
+        );
+      }
+    }
   }, [])
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
-  const [loading, setLoading] = React.useState(true)
+  const [creatingChat, setCreatingChat] = React.useState(false)
   let [color, setColor] = React.useState("#ffffff");
+  const [checkNew, setCheckNew] = React.useState<boolean>(false)
   const [mail] = useMail();
+
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -124,7 +178,9 @@ export function Mail({
     </div>
     )
   }
+
   return (
+    <div className="fadeInUp-animation">
     <TooltipProvider delayDuration={0}>
       <ResizablePanelGroup
         direction="horizontal"
@@ -139,52 +195,101 @@ export function Mail({
           defaultSize={defaultLayout[1]}
           minSize={20}
           maxSize={40}
+          className="left-panel"
         >
           <Tabs defaultValue="all">
             <div className="flex items-center px-4 py-2">
               <h1 className="text-xl font-bold mr-10">Inbox</h1>
-              <TabsList className="ml-auto">
+               <TabsList className="ml-auto mr-3">
+                <TabsTrigger
+                  value="all"
+                  className="text-zinc-600 dark:text-zinc-200"
+                  onClick={() => {
+                    console.log(currentUser)
+                   webSocket.send(
+                    JSON.stringify({
+                      type: "leaveAllRooms",
+                      payload: {
+                        userId: currentSeshState.email,
+                      },
+                    })
+                  );
+                  signOut()
+                  }}
+                >
+                  Sign Out
+                </TabsTrigger>
+              </TabsList>
+               <Dialog>
+                <TabsList className="">
                 <TabsTrigger
                   value="all"
                   className="text-zinc-600 dark:text-zinc-200"
                 >
-                  All mail
-                </TabsTrigger>
-                <TabsTrigger
-                  value="unread"
-                  className="text-zinc-600 dark:text-zinc-200"
-                >
-                  Unread
+                  <DialogTrigger>New Chat (+)</DialogTrigger>
                 </TabsTrigger>
               </TabsList>
-              <Button onClick={() => {
-               console.log(chats)
-              }} className="ml-5 h-8">Sign Out</Button>
+                <DialogContent style={{width: "1000px"}}>
+                  <DialogHeader>
+                    <DialogTitle>Users available for chatting?</DialogTitle>
+                    {newPossibleUsers && newPossibleUsers.map((user: any) => (
+                      <DialogDescription key={user.email}>
+                        {creatingChat === false ? (
+                          <div className="flex items-center mt-4">
+                                            <Input
+                          placeholder="Tag 1"
+                          className="mr-2"
+                          value={tag1?.get(`${user.email}`)?.toString()}
+                          onChange={(e) => {
+                            setTag1((prevTag1) => {
+                              const newTag1 = new Map(prevTag1);
+                              newTag1.set(`${user.email}`, e.target.value);
+                              return newTag1;
+                            });
+                          }}
+                        />
+                        <Input
+                          placeholder="Tag 2"
+                          className="mr-2"
+                          value={tag2?.get(`${user.email}`)?.toString()}
+                          onChange={(e) => {
+                            setTag2((prevTag2) => {
+                              const newTag2 = new Map(prevTag2);
+                              newTag2.set(`${user.email}`, e.target.value);
+                              return newTag2;
+                            });
+                          }}
+                        />
+                          <Button className="mr-8 bg-black text-white" onClick={() => {
+                            setCreatingChat(true)
+                           createNewChat(user.email, tag1?.get(`${user.email}`)?.toString() || "", tag2?.get(`${user.email}`)?.toString() || "");
+                          }}>{user.email}</Button>
+                          </div>
+                        ) : (
+                          <Button className="mt-4 bg-emerald-700" disabled>{user.email}</Button>
+                        )}
+                      </DialogDescription>
+                    ))}
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </div>
             <Separator />
-            <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-              <form>
-                <div className="relative">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Search" className="pl-8" />
-                </div>
-              </form>
-            </div>
-            <TabsContent value="all" className="m-0">
-              <MailList items={mails} />
-            </TabsContent>
-            <TabsContent value="unread" className="m-0">
-              <MailList items={mails.filter((item) => !item.read)} />
+            <TabsContent value="all" className="mt-5">
+              <MailList items={chats} />
             </TabsContent>
           </Tabs>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[2]}>
           <MailDisplay
-            mail={mails.find((item) => item.id === mail.selected) || null}
+            mail={chats.find((item: any) => item.chat_id.id === mail.selected) || null}
           />
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
+    </div>
   );
 }
+
+

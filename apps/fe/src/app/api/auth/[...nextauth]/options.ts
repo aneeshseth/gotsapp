@@ -31,7 +31,7 @@ export const options: NextAuthOptions = {
           userData = data![0]
         }
         let user;
-        if (credentials?.password == userData.password) {
+        if (userData.password != null && credentials?.password == userData.password) {
           user = { id: Math.floor(Math.random()*100).toString(), email: userData.email, password: credentials?.password, image: userData.image };
         } else {
           user = {id: Math.floor(Math.random()*100).toString(), email: "invalid", password: "invalid", image: "invalid"}

@@ -5,13 +5,10 @@ const supabase = createClient('https://ilsphosyotjetmkjcsnf.supabase.co', 'eyJhb
 
 export async function getChats(req: Request, res: Response) {
     const {email} = req.body;
-    console.log('email')
-    console.log(email)
-    const {data} = await supabase.from("USERS_CHATS").select(`id, user_id, chat_id (id ,updated_at, user1 (name, email, image), user2 (name, email, image), m_r_m, latest_message_status)`).eq("user_id", email)
-    console.log("darta")
-    console.log(data)
+    const {data} = await supabase.from("USERS_CHATS").select(`id, user_id, chat_id (id ,updated_at, user1 (name, email, image), user2 (name, email, image), m_r_m, latest_message_status, tag1, tag2, latest_message_user)`).eq("user_id", email)
+    const sortedData = data!.sort(GetSortOrderForChats("updated_at"))
     return res.status(200).json({
-        chats: data
+        chats: sortedData
     })
 }
 
@@ -43,11 +40,13 @@ export async function getNewChatPossibilies(req: Request, res: Response) {
 
 
 export async function createNewChat(req: Request, res: Response) {
-    const {email1, email2} = req.body;
+    const {email1, email2, tag1, tag2} = req.body;
     const { data } = await supabase
     .from('CHATS')
-    .insert({ user1: email1, user2: email2, m_r_m: "", latest_message_status: "read" })
+    .insert({ user1: email1, user2: email2, m_r_m: "", latest_message_status: "read", tag1: tag1, tag2: tag2 })
     .select()
+    await supabase.from('USERS_CHATS').insert({user_id: email1, chat_id: data![0].id})
+    await supabase.from('USERS_CHATS').insert({user_id: email2, chat_id: data![0].id})
     return res.status(200).json({
         createdChat: data
     })
@@ -64,3 +63,18 @@ function GetSortOrder(prop: any) {
         return 0;    
     }    
 }  
+
+
+function GetSortOrderForChats(prop: any) {    
+    return function(a: any, b: any) {
+        const aUpdatedAt = a.chat_id[prop];
+        const bUpdatedAt = b.chat_id[prop];
+        
+        if (aUpdatedAt > bUpdatedAt) {    
+            return -1;    
+        } else if (aUpdatedAt < bUpdatedAt) {    
+            return 1;    
+        }    
+        return 0;    
+    }    
+}
