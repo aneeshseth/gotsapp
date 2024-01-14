@@ -10,7 +10,7 @@ const port = 3004;
 import chatRouter from "./routes/chat-routes";
 
 import { createClient } from "@supabase/supabase-js";
-import { KafkaHandler } from "./kafka-msg-consumer";
+import { QueueHandler } from "./queue-handler";
 
 const supabase = createClient(
   "https://xyzcompany.supabase.co",
@@ -71,7 +71,7 @@ wss.on("connection", function connection(ws) {
         messageType
       );
       if (Number(numberOfSubs) > 1) {
-        await KafkaHandler.getInstance().produceMessage(
+        await QueueHandler.getInstance().produceMessage(
           JSON.stringify({
             roomId: roomId,
             message: message,
@@ -81,7 +81,7 @@ wss.on("connection", function connection(ws) {
           })
         );
       } else {
-        await KafkaHandler.getInstance().produceMessage(
+        await QueueHandler.getInstance().produceMessage(
           JSON.stringify({
             roomId: roomId,
             message: message,
@@ -101,16 +101,8 @@ wss.on("connection", function connection(ws) {
   );
 });
 
-async function createMainTopic() {
-  await KafkaHandler.getInstance().addTopic();
-}
-async function init() {
-  await KafkaHandler.getInstance().consumeMessage();
-  console.log("ehllow");
-}
 
-createMainTopic();
-init();
+
 
 server.listen(3004, () => {
   console.log(`server running`);

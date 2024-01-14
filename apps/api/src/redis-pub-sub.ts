@@ -13,7 +13,7 @@ export class RedisHandler {
   private reverseSubscriptions: Map<string, { userId: string; ws: any }[]>;
   private constructor() {
     this.subscriber = createClient({
-      url: "redis://redis_db:6379",
+     url: "redis://redis_db:6379",
     }
     );
     this.publisher = createClient({
