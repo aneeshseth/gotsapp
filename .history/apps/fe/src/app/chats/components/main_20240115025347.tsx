@@ -130,7 +130,7 @@ export function Mail({
     if (tag1 == "" || tag2 == "") {
       alert('please add relevant tags.')
     } else {
-      await axios.post("ec2-35-180-47-148.eu-west-3.compute.amazonaws.com:3004/createnew", {
+      await axios.post("http://localhost:3004/createnew", {
         email1: currentSeshState.email,
         email2: email2,
         tag1: tag1,

@@ -106,13 +106,13 @@ export function Mail({
       if (data) userData = data![0]
     }
     setUser(userData)
-    const res = await axios.post("ec2-35-180-47-148.eu-west-3.compute.amazonaws.com:3004/chats", {
+    const res = await axios.post("http://localhost:3004/chats", {
       email: currentSeshState.email
     })
     console.log(res.data.chats)
     setLoading(false)
     setChats(res.data.chats)
-    const users = await axios.post("ec2-35-180-47-148.eu-west-3.compute.amazonaws.com:3004/getnew", {
+    const users = await axios.post("http://localhost:3004/getnew", {
       email: currentSeshState.email
     })
     
@@ -130,7 +130,7 @@ export function Mail({
     if (tag1 == "" || tag2 == "") {
       alert('please add relevant tags.')
     } else {
-      await axios.post("ec2-35-180-47-148.eu-west-3.compute.amazonaws.com:3004/createnew", {
+      await axios.post("http://localhost:3004/createnew", {
         email1: currentSeshState.email,
         email2: email2,
         tag1: tag1,
