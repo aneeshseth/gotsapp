@@ -1,20 +1,6 @@
 "use client";
 import * as React from "react";
 import {
-  AlertCircle,
-  Archive,
-  ArchiveX,
-  File,
-  Inbox,
-  MessagesSquare,
-  PenBox,
-  Search,
-  Send,
-  ShoppingCart,
-  Trash2,
-  Users2,
-} from "lucide-react";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -22,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from 'axios'
 const override: CSSProperties = {
@@ -51,38 +37,26 @@ import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient('https://ilsphosyotjetmkjcsnf.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlsc3Bob3N5b3RqZXRta2pjc25mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ1MTQ5MzUsImV4cCI6MjAyMDA5MDkzNX0.Pv0x6T00bUOqeFeK32_8yvWTQAw0zzSibAi7XO4V6_E')
 
-interface MailProps {
-  accounts: {
-    label: string;
-    email: string;
-    icon: React.ReactNode;
-  }[];
-  defaultCollapsed?: boolean;
-  navCollapsedSize: number;
-}
 import './main-display.css'
 import { useRouter } from "next/navigation";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sessionState, userAppState, userSessionState, userState } from "@/app/state/atoms";
 import { Button } from "@/components/ui/button";
 import { useWebSocket } from "@/app/provider";
-
-export function Mail({
-  accounts,
-  defaultCollapsed = false,
-  navCollapsedSize,
-}: MailProps) {
+import { redirect } from 'next/navigation';
+export default function Mail() {
   const { data: session } = useSession();
   const router = useRouter()
   const setTags1 = new Map<String, String>();
   const setTags2 = new Map<String, String>();
   const [sesh, setSesh] = useRecoilState(sessionState);
   const webSocket: any = useWebSocket();
+  const [valid, setValid] = useState(true)
   const [tag1, setTag1] = useState<Map<String, String>>(new Map());
   const [tag2, setTag2] = useState<Map<String, String>>(new Map());
   const currentSeshState = useRecoilValue<any>(userSessionState)
   if (!session?.user) {
-    router.push("/")
+    redirect('/');
   } else {
     setSesh(session?.user!)
   }
@@ -147,7 +121,6 @@ export function Mail({
 
   React.useEffect(() => {
 
-
     fetchUserData()
     return () => {
       if (webSocket) {
@@ -162,7 +135,6 @@ export function Mail({
       }
     }
   }, [])
-  const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
   const [creatingChat, setCreatingChat] = React.useState(false)
   let [color, setColor] = React.useState("#ffffff");
   const [checkNew, setCheckNew] = React.useState<boolean>(false)

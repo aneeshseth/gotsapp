@@ -114,7 +114,7 @@ export default function Mail() {
         tag2: tag2
       })
       setCreatingChat(false)
-      window.location.reload()
+      //window.location.reload()
     }
   }
 
@@ -140,130 +140,10 @@ export default function Mail() {
   const [checkNew, setCheckNew] = React.useState<boolean>(false)
   const [mail] = useMail();
 
-  if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <ClipLoader
-        color={color}
-        loading={loading}
-        cssOverride={override}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-    </div>
-    )
-  }
 
   return (
     <div className="fadeInUp-animation">
-    <TooltipProvider delayDuration={0}>
-      <ResizablePanelGroup
-        direction="horizontal"
-        onLayout={(sizes: number[]) => {
-          document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-            sizes
-          )}`;
-        }}
-        className="h-full max-h-[750px] items-stretch"
-      >
-        <ResizablePanel
-          defaultSize={[265, 440, 655][1]}
-          minSize={20}
-          maxSize={40}
-          className="left-panel"
-        >
-          <Tabs defaultValue="all">
-            <div className="flex items-center px-4 py-2">
-              <h1 className="text-xl font-bold mr-10">Inbox</h1>
-               <TabsList className="ml-auto mr-3">
-                <TabsTrigger
-                  value="all"
-                  className="text-zinc-600 dark:text-zinc-200"
-                  onClick={() => {
-                    console.log(currentUser)
-                   webSocket.send(
-                    JSON.stringify({
-                      type: "leaveAllRooms",
-                      payload: {
-                        userId: currentSeshState.email,
-                      },
-                    })
-                  );
-                  signOut()
-                  }}
-                >
-                  Sign Out
-                </TabsTrigger>
-              </TabsList>
-               <Dialog>
-                <TabsList className="">
-                <TabsTrigger
-                  value="all"
-                  className="text-zinc-600 dark:text-zinc-200"
-                >
-                  <DialogTrigger>New Chat (+)</DialogTrigger>
-                </TabsTrigger>
-              </TabsList>
-                <DialogContent style={{width: "1000px"}}>
-                  <DialogHeader>
-                    <DialogTitle>Users available for chatting?</DialogTitle>
-                    {newPossibleUsers && newPossibleUsers.map((user: any) => (
-                      <DialogDescription key={user.email}>
-                        {creatingChat === false ? (
-                          <div className="flex items-center mt-4">
-                                            <Input
-                          placeholder="Tag 1"
-                          className="mr-2"
-                          value={tag1?.get(`${user.email}`)?.toString()}
-                          onChange={(e) => {
-                            setTag1((prevTag1) => {
-                              const newTag1 = new Map(prevTag1);
-                              newTag1.set(`${user.email}`, e.target.value);
-                              return newTag1;
-                            });
-                          }}
-                        />
-                        <Input
-                          placeholder="Tag 2"
-                          className="mr-2"
-                          value={tag2?.get(`${user.email}`)?.toString()}
-                          onChange={(e) => {
-                            setTag2((prevTag2) => {
-                              const newTag2 = new Map(prevTag2);
-                              newTag2.set(`${user.email}`, e.target.value);
-                              return newTag2;
-                            });
-                          }}
-                        />
-                          <Button className="mr-8 bg-black text-white" onClick={() => {
-                            setCreatingChat(true)
-                           createNewChat(user.email, tag1?.get(`${user.email}`)?.toString() || "", tag2?.get(`${user.email}`)?.toString() || "");
-                          }}>{user.email}</Button>
-                          </div>
-                        ) : (
-                          <Button className="mt-4 bg-emerald-700" disabled>{user.email}</Button>
-                        )}
-                      </DialogDescription>
-                    ))}
-                  </DialogHeader>
-                </DialogContent>
-              </Dialog>
-            </div>
-            <Separator />
-            <TabsContent value="all" className="mt-5">
-              <MailList items={chats} />
-            </TabsContent>
-          </Tabs>
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={[265, 440, 655][2]}>
-          <MailDisplay
-            mail={chats.find((item: any) => item.chat_id.id === mail.selected) || null}
-          />
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    </TooltipProvider>
+   <div>hello worfl</div>
     </div>
   );
 }

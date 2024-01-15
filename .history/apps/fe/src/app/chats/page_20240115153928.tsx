@@ -56,7 +56,7 @@ export default function Mail() {
   const [tag2, setTag2] = useState<Map<String, String>>(new Map());
   const currentSeshState = useRecoilValue<any>(userSessionState)
   if (!session?.user) {
-    redirect('/');
+    //setValid(false)
   } else {
     setSesh(session?.user!)
   }

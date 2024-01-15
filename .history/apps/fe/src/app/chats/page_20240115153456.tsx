@@ -1,5 +1,5 @@
 "use client"
-import {} from '@/app/chats/page'
+import {} from '@/app/chats/'
 import { accounts } from "@/app/chats/data";
 
 
