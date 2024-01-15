@@ -56,7 +56,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     if (email == "" || password == "" || name == "") {
       return;
     } else {
-      await signIn("credentials", {
+      signIn("credentials", {
         name: name,
         password: password,
         email: email,
@@ -162,7 +162,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         type="button"
         color="green"
         disabled={isLoading}
-        onClick={async () => await signIn("github", { callbackUrl: "/chats" })}
+        onClick={() => signIn("github", { callbackUrl: "/chats" })}
         className="bg-green-600"
       >
         <img src="https://favicon.twenty.com/github.com" className="h-6 mr-2" />
