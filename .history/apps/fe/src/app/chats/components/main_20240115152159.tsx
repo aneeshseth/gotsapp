@@ -37,6 +37,15 @@ import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient('https://ilsphosyotjetmkjcsnf.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlsc3Bob3N5b3RqZXRta2pjc25mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ1MTQ5MzUsImV4cCI6MjAyMDA5MDkzNX0.Pv0x6T00bUOqeFeK32_8yvWTQAw0zzSibAi7XO4V6_E')
 
+interface MailProps {
+  accounts: {
+    label: string;
+    email: string;
+    icon: React.ReactNode;
+  }[];
+  defaultCollapsed?: boolean;
+  navCollapsedSize: number;
+}
 import './main-display.css'
 import { useRouter } from "next/navigation";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -44,7 +53,11 @@ import { sessionState, userAppState, userSessionState, userState } from "@/app/s
 import { Button } from "@/components/ui/button";
 import { useWebSocket } from "@/app/provider";
 
-export default function Mail() {
+export default function Mail({
+  accounts,
+  defaultCollapsed = false,
+  navCollapsedSize,
+}: MailProps) {
   const { data: session } = useSession();
   const router = useRouter()
   const setTags1 = new Map<String, String>();
@@ -135,6 +148,7 @@ export default function Mail() {
       }
     }
   }, [])
+  const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
   const [creatingChat, setCreatingChat] = React.useState(false)
   let [color, setColor] = React.useState("#ffffff");
   const [checkNew, setCheckNew] = React.useState<boolean>(false)
