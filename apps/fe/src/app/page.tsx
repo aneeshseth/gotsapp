@@ -4,16 +4,10 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import Tiles from "@/components/ui/Tiles";
 import "./page.css";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-
 export default function Home() {
-  const { data: session } = useSession();
   const router = useRouter()
-  if (session?.user) {
-    router.push("/chats")
-  }
   return (
     <div className="fadeInUp-animation">
       <div className="bg-black  text-white bg-[url('https://images.unsplash.com/photo-1453090927415-5f45085b65c0?q=80&w=2648&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] ">

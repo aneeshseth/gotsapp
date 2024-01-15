@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,15 +8,11 @@ import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { useWebSocket } from "@/app/provider";
 import { useEffect } from "react";
+import { signIn } from "next-auth/react";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const { data: session } = useSession();
-  const router = useRouter()
-  if (session?.user) {
-    router.push("/chats")
-  }
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = React.useState<string>("ali12@gmail.com");
   const [password, setPassword] = React.useState<string>("ali12");
@@ -56,14 +51,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     if (email == "" || password == "" || name == "") {
       return;
     } else {
-      const user = await signIn("credentials", {
-        name: name,
-        password: password,
-        email: email,
+      await signIn("credentials", {
         callbackUrl: "/chats",
+        email: email,
+        password: password,
+        username: name,
       })
-      console.log("CURRENT USER")
-      console.log(user)
     }
   }
 
@@ -164,7 +157,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         type="button"
         color="green"
         disabled={isLoading}
-        onClick={async () => await signIn("github", { callbackUrl: "/chats" })}
+        onClick={() => signIn("github", { callbackUrl: "/chats" })}
         className="bg-green-600"
       >
         <img src="https://favicon.twenty.com/github.com" className="h-6 mr-2" />

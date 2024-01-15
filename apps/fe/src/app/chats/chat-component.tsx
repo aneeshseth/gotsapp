@@ -16,7 +16,6 @@ const override: CSSProperties = {
   margin: "0 auto",
   borderColor: "red",
 };
-import { useSession, signIn, signOut } from "next-auth/react";
 import { AccountSwitcher } from "@/app/chats/components/account-switcher";
 import { MailDisplay } from "@/app/chats/components/main-display";
 import { MailList } from "@/app/chats/components/main-list";
@@ -32,11 +31,6 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient('https://ilsphosyotjetmkjcsnf.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlsc3Bob3N5b3RqZXRta2pjc25mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ1MTQ5MzUsImV4cCI6MjAyMDA5MDkzNX0.Pv0x6T00bUOqeFeK32_8yvWTQAw0zzSibAi7XO4V6_E')
-
 import './main-display.css'
 import { useRouter } from "next/navigation";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -44,14 +38,19 @@ import { sessionState, userAppState, userSessionState, userState } from "@/app/s
 import { Button } from "@/components/ui/button";
 import { useWebSocket } from "@/app/provider";
 import { redirect } from 'next/navigation';
-export default function Mail() {
-  const { data: session, status } = useSession();
+import { signOut } from "next-auth/react";
+interface MailProps {
+  email: string,
+  image: string,
+  name: string
+}
+export default function Mail({email, image, name}: MailProps) {
+
   const router = useRouter()
   const setTags1 = new Map<String, String>();
   const setTags2 = new Map<String, String>();
   const [sesh, setSesh] = useRecoilState(sessionState);
   const webSocket: any = useWebSocket();
-  const [valid, setValid] = useState(true)
   const [tag1, setTag1] = useState<Map<String, String>>(new Map());
   const [tag2, setTag2] = useState<Map<String, String>>(new Map());
   const [creatingChat, setCreatingChat] = React.useState(false)
@@ -66,28 +65,28 @@ export default function Mail() {
   const [loading, setLoading] = React.useState(true)
   async function fetchUserData() {
     const data: any = await axios.post('https://aneesh.pro/fetchuser', {
-      email: session?.user?.email
+      email: email
     })
     let userData = data;
     if (data?.length == 0) {
       const data:any = await axios.post('https://aneesh.pro/add', {
-        email: session?.user?.email,
+        email: email,
         password: null,
-        name: session?.user?.name
+        name: name
       })
       if (data) userData = data![0]
     }
     setUser(userData)
     console.log('current sesh email')
-    console.log(currentSeshState.email)
+    console.log(email)
     const res = await axios.post("https://aneesh.pro/chats", {
-      email: session?.user?.email
+      email: email
     })
     console.log(res.data.chats)
     setLoading(false)
     setChats(res.data.chats)
     const users = await axios.post("https://aneesh.pro/getnew", {
-      email: currentSeshState.email
+      email: email
     })
     
     console.log(users?.data)
@@ -105,7 +104,7 @@ export default function Mail() {
       alert('please add relevant tags.')
     } else {
       await axios.post("https://aneesh.pro/createnew", {
-        email1: currentSeshState.email,
+        email1: email,
         email2: email2,
         tag1: tag1,
         tag2: tag2
@@ -115,28 +114,8 @@ export default function Mail() {
     }
   }
 
-  if (status === "unauthenticated") {
-    console.log("UNAUTHENTICATED")
-    redirect('/');
-  } else if (status === 'loading') {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <ClipLoader
-        color={color}
-        loading={loading}
-        cssOverride={override}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-    </div>
-    )
-  } else {
-    setSesh(session?.user!)
-    if (session?.user?.email == "invalid") {
-      signOut()
-    }
     React.useEffect(() => {
+      setSesh({email: email, image: image, name: name})
       fetchUserData()
       return () => {
         if (webSocket) {
@@ -144,7 +123,7 @@ export default function Mail() {
             JSON.stringify({
               type: "leaveAllRooms",
               payload: {
-                userId: currentSeshState.email,
+                userId: email,
               },
             })
           );
@@ -199,7 +178,7 @@ export default function Mail() {
                       JSON.stringify({
                         type: "leaveAllRooms",
                         payload: {
-                          userId: currentSeshState.email,
+                          userId: email,
                         },
                       })
                     );
@@ -280,8 +259,3 @@ export default function Mail() {
       </div>
     );
   }
-
- 
-}
-
-

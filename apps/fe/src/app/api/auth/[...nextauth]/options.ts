@@ -1,51 +1,58 @@
-
-import type { NextAuthOptions } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-import { createClient } from '@supabase/supabase-js'
+import type { AuthOptions } from "next-auth";
 import axios from "axios";
-
-const supabase = createClient('https://ilsphosyotjetmkjcsnf.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlsc3Bob3N5b3RqZXRta2pjc25mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ1MTQ5MzUsImV4cCI6MjAyMDA5MDkzNX0.Pv0x6T00bUOqeFeK32_8yvWTQAw0zzSibAi7XO4V6_E')
-
-
-export const options: NextAuthOptions = {
+export const options: AuthOptions = {
+  secret: "p8OvEvf4pKyYlcs84/vePmV8LLfKqwfke3G+yAEcQ1s=",
   providers: [
     GitHubProvider({
-      clientId: "95720ff743d90d038c06",
-      clientSecret: "f77d7a9b3d14eec9f133fd6b5dea081e6a491a3f",
+      name: "GitHub",
+      clientId: "354b5078f83a56543ea0",
+      clientSecret: "f3c1b5aa7072349b743573f20c570a2bce80dd4e",
     }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "email", type: "text", placeholder: "jsmith@gmail.com" },
-        name: { label: "Name", type: "text", placeholder: "jsmith" },
+        email: {
+          label: "email",
+          type: "text",
+          placeholder: "jsmith@gmail.com",
+        },
+        username: { label: "username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const data: any = await axios.post('https://aneesh.pro/fetchuser', {
-          email: credentials?.email
-        })
-        let userData = data;
+        console.log(credentials);
+        const data: any = await axios.post("https://aneesh.pro/fetchuser", {
+          email: credentials?.email,
+        });
+        console.log(data.data);
+        let userData = data.data;
         if (data?.length == 0) {
-          const data = await axios.post('https://aneesh.pro/add', {
+          const data = await axios.post("https://aneesh.pro/add", {
             email: credentials?.email,
             password: credentials?.password,
-            name: credentials?.name
-          })
-          userData = data
+            name: credentials?.username,
+          });
+          userData = data;
         }
         let user;
-        if (userData.password != null && credentials?.password == userData.password) {
-          user = { id: Math.floor(Math.random()*100).toString(), email: userData.email, password: credentials?.password, image: userData.image };
+        if (
+          userData.password != null &&
+          credentials?.password == userData.password
+        ) {
+          user = {
+            id: Math.floor(Math.random() * 100).toString(),
+            email: userData.email,
+            password: credentials?.password,
+            image: userData.image,
+            name: userData.name,
+          };
         } else {
-          user = {id: Math.floor(Math.random()*100).toString(), email: "invalid", password: "invalid", image: "invalid"}
+          return null;
         }
         return user;
       },
     }),
   ],
-  secret: "KBedCBUNSFxdMf2g9lzUZIT7X5Eddzv/+Lro/DoMr8o=",
 };
-
-
