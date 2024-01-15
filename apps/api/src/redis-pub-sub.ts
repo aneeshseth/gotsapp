@@ -1,9 +1,6 @@
 import { RedisClientType } from "redis";
 import { createClient } from "redis";
-const Redis = require("ioredis");
-const redisUri = "rediss://default:AVNS_g3BWXhFIbfNmsNr-o9K@redis-1e99ff70-aneeshseth2018-fa67.a.aivencloud.com:24981"
-const redis = new Redis(redisUri);
-redis
+
 export class RedisHandler {
   private static instance: RedisHandler;
   private generalClient: RedisClientType;

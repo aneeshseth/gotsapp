@@ -9,13 +9,10 @@ const wss = new WebSocketServer({ server });
 const port = 3004;
 import chatRouter from "./routes/chat-routes";
 
-import { createClient } from "@supabase/supabase-js";
+
 import { QueueHandler } from "./queue-handler";
 
-const supabase = createClient(
-  "https://xyzcompany.supabase.co",
-  "public-anon-key"
-);
+
 app.use(cors({
   credentials: true, 
   origin: true
@@ -111,20 +108,4 @@ server.listen(3004, () => {
 });
 
 
-/*
-redis_db:
-    image: "redis:alpine"
-    ports:
-      - 6379:6379
-  api:
-    restart: always
-    ports:
-      - 3004:3004
-    build:
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      - kafka1
-      - redis_db  
 
-*/

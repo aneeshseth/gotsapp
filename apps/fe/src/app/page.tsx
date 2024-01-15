@@ -10,7 +10,7 @@ export default function Home() {
   const router = useRouter()
   return (
     <div className="fadeInUp-animation">
-      <div className="bg-black  text-white bg-[url('https://images.unsplash.com/photo-1453090927415-5f45085b65c0?q=80&w=2648&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] ">
+      <div className="bg-black  text-white bg-[url('https://images.unsplash.com/photo-1511406361295-0a1ff814c0ce?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] ">
         <nav className="py-6 flex justify-between items-center px-8 mb-20">
           <div className="text-2xl font-bold">
             <img
@@ -36,7 +36,7 @@ export default function Home() {
           </h3>
           <div className="flex flex-row gap-3">
           <Button
-            className="bg-transparent border-b border-white text-white hover:bg-white hover:text-black"
+            className="bg-transparent text-white  hover:bg-white hover:text-black"
             onClick={() => {
               router.push("/how");
             }}
@@ -44,7 +44,7 @@ export default function Home() {
             How was this built?
           </Button>
           <Button
-            className="bg-transparent border-b border-white text-white hover:bg-white hover:text-black"
+            className="bg-transparent  text-white hover:bg-white hover:text-black"
             onClick={() => {
               router.push("/auth");
             }}
