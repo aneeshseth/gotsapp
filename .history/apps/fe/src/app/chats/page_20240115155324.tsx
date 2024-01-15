@@ -72,10 +72,10 @@ export default function Mail() {
       />
     </div>
     )
-  } 
-
-  setLoading(false)
-  setSesh(session?.user!)
+  } else {
+    setLoading(false)
+    setSesh(session?.user!)
+  }
   if (session?.user?.email == "invalid") {
     signOut()
   }
