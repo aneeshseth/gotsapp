@@ -5,12 +5,8 @@ const supabase = createClient('https://ilsphosyotjetmkjcsnf.supabase.co', 'eyJhb
 
 export async function getChats(req: Request, res: Response) {
     const {email} = req.body;
-    console.log('before supabase')
     const {data} = await supabase.from("USERS_CHATS").select(`id, user_id, chat_id (id ,updated_at, user1 (name, email, image), user2 (name, email, image), m_r_m, latest_message_status, tag1, tag2, latest_message_user)`).eq("user_id", email)
-    console.log('after supabase')
     const sortedData = data!.sort(GetSortOrderForChats("updated_at"))
-    console.log('sorted data')
-    console.log(sortedData)
     return res.status(200).json({
         chats: sortedData
     })
@@ -37,7 +33,6 @@ export async function getNewChatPossibilies(req: Request, res: Response) {
         }
     })
     await Promise.all(checkPushes!)
-    console.log('after new chat possibilities')
     return res.status(200).json({
         users: finalArr
     })
