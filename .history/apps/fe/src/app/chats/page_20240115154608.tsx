@@ -54,24 +54,9 @@ export default function Mail() {
   const [valid, setValid] = useState(true)
   const [tag1, setTag1] = useState<Map<String, String>>(new Map());
   const [tag2, setTag2] = useState<Map<String, String>>(new Map());
-  let [color, setColor] = React.useState("#ffffff");
   const currentSeshState = useRecoilValue<any>(userSessionState)
-  const [loading, setLoading] = React.useState(true)
   if (status === "unauthenticated") {
     redirect('/');
-  } else if (status === "loading") {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <ClipLoader
-        color={color}
-        loading={loading}
-        cssOverride={override}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-    </div>
-    )
   } else {
     setSesh(session?.user!)
   }
@@ -80,6 +65,7 @@ export default function Mail() {
   }
   const [user, setUser] = useRecoilState(userState);
   const currentUser = useRecoilValue<any>(userAppState);
+  const [loading, setLoading] = React.useState(true)
   const [chats, setChats] = React.useState<any>([])
   const [newPossibleUsers, setNewPossibleUsers] = React.useState<any>([])
   async function fetchUserData() {
@@ -150,6 +136,7 @@ export default function Mail() {
     }
   }, [])
   const [creatingChat, setCreatingChat] = React.useState(false)
+  let [color, setColor] = React.useState("#ffffff");
   const [checkNew, setCheckNew] = React.useState<boolean>(false)
   const [mail] = useMail();
 
