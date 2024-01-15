@@ -40,7 +40,7 @@ export const options: NextAuthOptions = {
       },
     }),
   ],
-  secret: "KBedCBUNSFxdMf2g9lzUZIT7X5Eddzv/+Lro/DoMr8o=",
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 
