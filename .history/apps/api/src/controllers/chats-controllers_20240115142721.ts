@@ -5,8 +5,6 @@ const supabase = createClient('https://ilsphosyotjetmkjcsnf.supabase.co', 'eyJhb
 
 export async function getChats(req: Request, res: Response) {
     const {email} = req.body;
-    console.log('chats email get')
-    console.log(email)
     console.log('before supabase')
     const {data} = await supabase.from("USERS_CHATS").select(`id, user_id, chat_id (id ,updated_at, user1 (name, email, image), user2 (name, email, image), m_r_m, latest_message_status, tag1, tag2, latest_message_user)`).eq("user_id", email)
     console.log('after supabase')

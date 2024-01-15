@@ -110,8 +110,10 @@ export function Mail({
       if (data) userData = data![0]
     }
     setUser(userData)
+    console.log('current sesh email')
+    console.log(currentSeshState.email)
     const res = await axios.post("https://aneesh.pro/chats", {
-      email: currentSeshState.email
+      email: session?.user?.email
     })
     console.log(res.data.chats)
     setLoading(false)
