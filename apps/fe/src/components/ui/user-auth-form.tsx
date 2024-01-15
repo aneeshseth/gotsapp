@@ -63,7 +63,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
-        <div className="grid gap-2">
+        <div className="grid gap-2 justify-center">
           <div>
             <Label className="" htmlFor="email">
               Email
@@ -74,7 +74,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoCorrect="off"
               disabled={isLoading}
-              className="mt-2"
+              className="mt-2 max-w-80"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -91,7 +91,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
-              className="mt-2"
+              className="mt-2 max-w-80"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -105,7 +105,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoCorrect="off"
               disabled={isLoading}
-              className="mt-2"
+              className="mt-2 max-w-80"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -113,24 +113,24 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <div className="flex flex-row w-full justify-center">
           <Button
             disabled={isLoading}
-            className="mt-5 bg-red-800 text-white mr-1"
+            className="mt-5 bg-indigo-700 text-white mr-1 max-w-24"
             onClick={handleCredentials1}
           >
-            Credentials 1
+            sample 1
           </Button>
           <Button
             disabled={isLoading}
-            className="mt-5 bg-red-800 text-white mr-1"
+            className="mt-5 bg-indigo-700 text-white mr-1 max-w-24"
             onClick={handleCredentials2}
           >
-            Credentials 2
+            sample 2
           </Button>
           <Button
             disabled={isLoading}
-            className="mt-5 bg-red-800 text-white mr-1"
+            className="mt-5  bg-indigo-700 text-white mr-1 max-w-24"
             onClick={handleCredentials3}
           >
-            Credentials 3
+            sample 3
           </Button>
           </div>
           <Button

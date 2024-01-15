@@ -117,6 +117,8 @@ export default function Mail({email, image, name}: MailProps) {
     React.useEffect(() => {
       setSesh({email: email, image: image, name: name})
       fetchUserData()
+      const isMobileDevice = window.innerWidth <= 768;
+      if (isMobileDevice) alert('please increase screensize/login with a bigger device to make use of this web version.')
       return () => {
         if (webSocket) {
           webSocket.send(

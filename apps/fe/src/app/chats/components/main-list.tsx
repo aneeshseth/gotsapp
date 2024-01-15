@@ -14,7 +14,7 @@ import { userSessionState } from "@/app/state/atoms";
 import { useRecoilValue } from "recoil";
 import { createClient } from '@supabase/supabase-js'
 import axios from "axios";
-const supabase = createClient('https://ilsphosyotjetmkjcsnf.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlsc3Bob3N5b3RqZXRta2pjc25mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ1MTQ5MzUsImV4cCI6MjAyMDA5MDkzNX0.Pv0x6T00bUOqeFeK32_8yvWTQAw0zzSibAi7XO4V6_E')
+
 
 interface MailListProps {
   items: any;

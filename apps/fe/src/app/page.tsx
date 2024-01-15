@@ -38,7 +38,7 @@ export default function Home() {
           <Button
             className="bg-transparent border-b border-white text-white hover:bg-white hover:text-black"
             onClick={() => {
-              router.push("/build");
+              router.push("/how");
             }}
           >
             How was this built?
