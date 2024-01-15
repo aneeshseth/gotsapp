@@ -132,8 +132,6 @@ export default function Mail() {
     </div>
     )
   } else {
-    console.log("SESH STATUS")
-    console.log(status)
     setSesh(session?.user!)
     if (session?.user?.email == "invalid") {
       signOut()

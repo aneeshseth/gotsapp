@@ -54,9 +54,6 @@ export default function Mail() {
   const [valid, setValid] = useState(true)
   const [tag1, setTag1] = useState<Map<String, String>>(new Map());
   const [tag2, setTag2] = useState<Map<String, String>>(new Map());
-  const [creatingChat, setCreatingChat] = React.useState(false)
-  const [checkNew, setCheckNew] = React.useState<boolean>(false)
-  const [mail] = useMail();
   const [user, setUser] = useRecoilState(userState);
   const currentUser = useRecoilValue<any>(userAppState);
   const [chats, setChats] = React.useState<any>([])
@@ -132,13 +129,14 @@ export default function Mail() {
     </div>
     )
   } else {
-    console.log("SESH STATUS")
-    console.log(status)
     setSesh(session?.user!)
     if (session?.user?.email == "invalid") {
       signOut()
     }
+
+    
     React.useEffect(() => {
+  
       fetchUserData()
       return () => {
         if (webSocket) {
@@ -153,7 +151,9 @@ export default function Mail() {
         }
       }
     }, [])
-
+    const [creatingChat, setCreatingChat] = React.useState(false)
+    const [checkNew, setCheckNew] = React.useState<boolean>(false)
+    const [mail] = useMail();
   
     if (loading) {
       return (
