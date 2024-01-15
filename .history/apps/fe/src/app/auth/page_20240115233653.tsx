@@ -36,7 +36,7 @@ export default function AuthenticationPage() {
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">Sign in</h1>
           </div>
-          <code className="relative rounded bg-muted px-0 py-1 font-mono text-sm font-semibold w-full github-si flex justify-center">
+          <code className="relative rounded bg-muted px-0 py-[0.2rem] font-mono text-sm font-semibold w-full github-si flex justify-center w-full">
             <div className="sign-text">
               Sign-in with sample credentials/Github.
             </div>
