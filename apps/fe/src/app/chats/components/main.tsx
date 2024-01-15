@@ -97,12 +97,16 @@ export function Mail({
   const [chats, setChats] = React.useState<any>([])
   const [newPossibleUsers, setNewPossibleUsers] = React.useState<any>([])
   async function fetchUserData() {
-    const {data} = await supabase.from("USERS").select().eq("email", session?.user?.email)
-    let userData = {data}.data![0];
+    const data: any = await axios.post('https://aneesh.pro/fetchuser', {
+      email: session?.user?.email
+    })
+    let userData = data;
     if (data?.length == 0) {
-      const { data ,error } = await supabase
-      .from('USERS')
-      .insert({ email: session?.user?.email, password: null, name : session?.user?.name, image: "https://img.analisa.io/tiktok/profile/7031003225021875205.png"}).select()
+      const data:any = await axios.post('https://aneesh.pro/add', {
+        email: session?.user?.email,
+        password: null,
+        name: session?.user?.name
+      })
       if (data) userData = data![0]
     }
     setUser(userData)

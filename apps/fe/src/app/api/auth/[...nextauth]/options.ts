@@ -4,6 +4,7 @@ import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { createClient } from '@supabase/supabase-js'
+import axios from "axios";
 
 const supabase = createClient('https://ilsphosyotjetmkjcsnf.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlsc3Bob3N5b3RqZXRta2pjc25mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ1MTQ5MzUsImV4cCI6MjAyMDA5MDkzNX0.Pv0x6T00bUOqeFeK32_8yvWTQAw0zzSibAi7XO4V6_E')
 
@@ -22,13 +23,17 @@ export const options: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const {data} = await supabase.from("USERS").select().eq("email", credentials?.email)
-        let userData = {data}.data![0];
+        const data: any = await axios.post('https://aneesh.pro/fetchuser', {
+          email: credentials?.email
+        })
+        let userData = data;
         if (data?.length == 0) {
-          const { data ,error } = await supabase
-          .from('USERS')
-          .insert({ email: credentials?.email, password: credentials?.password, name : credentials?.name, image: "https://img.analisa.io/tiktok/profile/7031003225021875205.png"}).select()
-          userData = data![0]
+          const data = await axios.post('https://aneesh.pro/add', {
+            email: credentials?.email,
+            password: credentials?.password,
+            name: credentials?.name
+          })
+          userData = data
         }
         let user;
         if (userData.password != null && credentials?.password == userData.password) {

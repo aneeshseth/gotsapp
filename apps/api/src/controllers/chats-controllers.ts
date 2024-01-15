@@ -83,3 +83,31 @@ function GetSortOrderForChats(prop: any) {
         return 0;    
     }    
 }
+
+
+async function authorizeUser(req: Request, res: Response) {
+    const {email} = req.body;
+    const {data} = await supabase.from("USERS").select().eq("email", email)
+    return res.status(200).send({data}.data![0])
+}
+
+export async function addUser(req: Request, res: Response) {
+    const {email, password, name} = req.body;
+    const {data, error} = await supabase
+          .from('USERS')
+          .insert({ email: email, password: password, name : name, image: "https://img.analisa.io/tiktok/profile/7031003225021875205.png"}).select()
+    return res.status(200).send(data![0])
+}
+
+export async function updateChatStatus(req: Request, res: Response) {
+    const {id} = req.body;
+    await supabase.from('CHATS').update({ latest_message_status: "read"}).eq("id", id)
+    return res.sendStatus(200)
+}
+
+
+export async function fetchUser(req: Request, res: Response) {
+    const {email} = req.body;
+    const {data} = await supabase.from("USERS").select().eq("email", email)
+    return res.status(200).send({data}.data![0])
+}
