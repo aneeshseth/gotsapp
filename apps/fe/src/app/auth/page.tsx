@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function AuthenticationPage() {
   return (
     <div className="fadeInUp-animation">
-      <div className="container h-[800px] flex flex-col items-center justify-center md:grid sm:grid lg:max-w-none lg:grid-cols-2 lg:px-0 sm:max-w-none">
+      <div className="container h-screen flex flex-col items-center justify-center md:grid sm:grid lg:max-w-none lg:grid-cols-2 lg:px-0 sm:max-w-none">
         <Link
           href="https://github.com/aneeshseth/gotsapp"
           className={cn(

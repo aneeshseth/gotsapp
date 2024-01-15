@@ -150,7 +150,7 @@ export default function Mail({email, image, name}: MailProps) {
     }
   
     return (
-      <div className="fadeInUp-animation">
+      <div className="fadeInUp-animation h-screen">
       <TooltipProvider delayDuration={0}>
         <ResizablePanelGroup
           direction="horizontal"
@@ -159,7 +159,7 @@ export default function Mail({email, image, name}: MailProps) {
               sizes
             )}`;
           }}
-          className="h-full max-h-[750px] items-stretch"
+          className="h-screen items-stretch"
         >
           <ResizablePanel
             defaultSize={[265, 440, 655][1]}
