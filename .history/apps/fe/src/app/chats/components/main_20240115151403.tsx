@@ -57,7 +57,6 @@ interface MailProps {
     email: string;
     icon: React.ReactNode;
   }[];
-  defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
 }
@@ -70,7 +69,6 @@ import { useWebSocket } from "@/app/provider";
 
 export function Mail({
   accounts,
- // defaultLayout = [265, 440, 655],
   defaultCollapsed = false,
   navCollapsedSize,
 }: MailProps) {
@@ -198,7 +196,7 @@ export function Mail({
         className="h-full max-h-[750px] items-stretch"
       >
         <ResizablePanel
-          defaultSize={defaultLayout[1]}
+          defaultSize={[265, 440, 655][1]}
           minSize={20}
           maxSize={40}
           className="left-panel"
@@ -287,7 +285,7 @@ export function Mail({
           </Tabs>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[2]}>
+        <ResizablePanel defaultSize={[265, 440, 655][2]}>
           <MailDisplay
             mail={chats.find((item: any) => item.chat_id.id === mail.selected) || null}
           />

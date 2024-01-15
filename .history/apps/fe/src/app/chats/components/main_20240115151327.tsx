@@ -57,7 +57,6 @@ interface MailProps {
     email: string;
     icon: React.ReactNode;
   }[];
-  defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
 }
