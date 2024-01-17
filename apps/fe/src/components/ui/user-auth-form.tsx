@@ -14,9 +14,9 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [email, setEmail] = React.useState<string>("ali12@gmail.com");
-  const [password, setPassword] = React.useState<string>("ali12");
-  const [name, setName] = React.useState<string>("ali123");
+  const [email, setEmail] = React.useState<string>("sethamishi0512@gmail.com");
+  const [password, setPassword] = React.useState<string>("Doll@2107");
+  const [name, setName] = React.useState<string>("Amishi Seth");
 
 
 
@@ -41,11 +41,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setName("Vijay Seth")
   }
 
-  function handleCredentials1() {
-    setEmail("ali12@gmail.com")
-    setName("ali123")
-    setPassword("ali12")
-  }
 
   async function manageSignIn() {
     if (email == "" || password == "" || name == "") {
@@ -110,27 +105,20 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div className="flex flex-row w-full justify-center">
+          <div className="flex flex-row w-full justify-center gap-3">
           <Button
             disabled={isLoading}
-            className="mt-5 bg-indigo-700 text-white mr-1 max-w-24"
-            onClick={handleCredentials1}
+            className="mt-5 bg-violet-900 text-white mr-1 max-w-24"
+            onClick={handleCredentials2}
           >
             sample 1
           </Button>
           <Button
             disabled={isLoading}
-            className="mt-5 bg-indigo-700 text-white mr-1 max-w-24"
-            onClick={handleCredentials2}
-          >
-            sample 2
-          </Button>
-          <Button
-            disabled={isLoading}
-            className="mt-5  bg-indigo-700 text-white mr-1 max-w-24"
+            className="mt-5  bg-violet-900 text-white mr-1 max-w-24"
             onClick={handleCredentials3}
           >
-            sample 3
+            sample 2
           </Button>
           </div>
           <Button

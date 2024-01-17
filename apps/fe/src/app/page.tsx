@@ -36,17 +36,9 @@ export default function Home() {
           </h3>
           <div className="flex flex-row gap-3">
           <Button
-            className="bg-transparent text-white  hover:bg-white hover:text-black"
-            onClick={() => {
-              router.push("/how");
-            }}
-          >
-            How was this built?
-          </Button>
-          <Button
             className="bg-transparent  text-white hover:bg-white hover:text-black"
             onClick={() => {
-              router.push("/auth");
+              router.push("/how");
             }}
           >
             Start Chatting
