@@ -76,3 +76,4 @@ export class QueueHandler {
     await this.queue.add('sendMessage', { message: messageToSend });
   }
 }
+
