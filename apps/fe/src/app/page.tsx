@@ -38,7 +38,7 @@ export default function Home() {
           <Button
             className="bg-transparent  text-white hover:bg-white hover:text-black"
             onClick={() => {
-              router.push("/how");
+              router.push("/auth");
             }}
           >
             Start Chatting
