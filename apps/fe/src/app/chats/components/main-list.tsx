@@ -97,13 +97,9 @@ export function MailList({ items }: MailListProps) {
                 <div className="line-clamp-2 text-xs text-muted-foreground ">
                 {item.chat_id.m_r_m.substring(0, 305)}
                 {item.chat_id ? (
-              <div className="flex items-center gap-2 mt-3">
-                 <Badge key={item.chat_id.tag1} variant={getBadgeVariantFromLabel(item.chat_id.tag1)} className="">
-                    {item.chat_id.tag1}
-                  </Badge>
-                  <Badge key={item.chat_id.tag2} variant={getBadgeVariantFromLabel(item.chat_id.tag2)}>
-                    {item.chat_id.tag2}
-                  </Badge>
+             <div className="flex items-center gap-2 mt-3">
+                <div key={item.chat_id.tag1} className={`bg-${getBadgeVariantFromLabel(item.chat_id.tag1)}  text-white rounded-md p-2`}>  {item.chat_id.tag1}</div>
+                <div key={item.chat_id.tag2} className={`bg-${getBadgeVariantFromLabel(item.chat_id.tag1)} text-white rounded-md p-2`}>  {item.chat_id.tag2}</div>
               </div>
             ) : null}
               </div>
@@ -120,16 +116,8 @@ export function MailList({ items }: MailListProps) {
 
 function getBadgeVariantFromLabel(
   label: string
-): ComponentProps<typeof Badge>["variant"] {
-  if (["love"].includes(label.toLowerCase())) {
-    return "default";
-  }
-
-  if (["sibling"].includes(label.toLowerCase())) {
-    return "outline";
-  }
-
-  return "destructive";
+): ComponentProps<any>["variant"] {
+  return "black";
 }
 
 
