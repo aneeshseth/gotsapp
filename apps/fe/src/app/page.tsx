@@ -36,7 +36,7 @@ export default function Home() {
           </h3>
           <div className="flex flex-row gap-3">
           <Button
-            className="bg-transparent  text-white hover:bg-white hover:text-black"
+            className="bg-white  text-black hover:bg-black hover:text-white"
             onClick={() => {
               router.push("/auth");
             }}
