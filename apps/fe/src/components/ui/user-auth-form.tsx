@@ -69,7 +69,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoCorrect="off"
               disabled={isLoading}
-              className="mt-2 max-w-80"
+              className="mt-2 w-[300px]"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -86,7 +86,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
-              className="mt-2 max-w-80"
+              className="mt-2 w-[300px]"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -100,7 +100,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoCorrect="off"
               disabled={isLoading}
-              className="mt-2 max-w-80"
+              className="mt-2 w-[300px]"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
