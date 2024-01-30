@@ -6,8 +6,30 @@ import "./page.css";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 export default function Home() {
   const router = useRouter()
+   const [video, setVideo] = useState(false);
+  if (video) {
+    return (
+      <div className="flex h-screen w-screen flex-col items-center justify-center">
+        <video
+          src="https://myawsbucketaneesh.s3.eu-west-3.amazonaws.com/0130.mp4"
+          controls
+          autoPlay
+          className="ml-10 mr-10 mb-5"
+        />
+        <Button
+          className="ml-10 mr-10 bg-white text-black w-48"
+          onClick={() => {
+            setVideo(false);
+          }}
+        >
+          Stop Video
+        </Button>
+      </div>
+    );
+  }
   return (
     <div className="fadeInUp-animation">
       <div className="bg-black  text-white bg-[url('https://images.unsplash.com/photo-1511406361295-0a1ff814c0ce?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] ">
@@ -42,6 +64,14 @@ export default function Home() {
             }}
           >
             Start Chatting
+          </Button>
+          <Button
+            className="bg-white  text-black hover:bg-black hover:text-white"
+            onClick={() => {
+              setVideo(true);
+            }}
+          >
+            Watch Demo
           </Button>
           </div>
         </div>
