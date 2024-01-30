@@ -105,28 +105,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div className="flex flex-row w-full justify-center gap-3">
-          <Button
-            disabled={isLoading}
-            className="mt-5 bg-violet-900 text-white mr-1 max-w-24"
-            onClick={handleCredentials2}
-          >
-            sample 1
-          </Button>
-          <Button
-            disabled={isLoading}
-            className="mt-5  bg-violet-900 text-white mr-1 max-w-24"
-            onClick={handleCredentials3}
-          >
-            sample 2
-          </Button>
-          </div>
           <Button
             disabled={isLoading}
             className="mt-5 bg-violet-900 text-white"
             onClick={manageSignIn}
           >
-            Sign In with above Credentials
+            Sign In 
           </Button>
         </div>
       </form>
