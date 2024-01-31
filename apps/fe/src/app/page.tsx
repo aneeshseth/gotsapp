@@ -34,12 +34,6 @@ export default function Home() {
     <div className="fadeInUp-animation">
       <div className="bg-black  text-white bg-[url('https://images.unsplash.com/photo-1511406361295-0a1ff814c0ce?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] ">
         <nav className="py-6 flex justify-between items-center px-8 mb-20">
-          <div className="text-2xl font-bold">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/WhatsApp_icon.png/598px-WhatsApp_icon.png"
-              className="w-14"
-            />
-          </div>
           <Link
           href="https://github.com/aneeshseth/gotsapp"
           className=
