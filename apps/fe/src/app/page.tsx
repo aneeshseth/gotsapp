@@ -17,7 +17,7 @@ export default function Home() {
           src="https://myawsbucketaneesh.s3.eu-west-3.amazonaws.com/0130.mp4"
           controls
           autoPlay
-          className="ml-10 mr-10 mb-5"
+          className="ml-10 mr-10 mb-5 h-5/6"
         />
         <Button
           className="ml-10 mr-10 bg-white text-black w-48"
