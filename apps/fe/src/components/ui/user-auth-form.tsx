@@ -14,9 +14,9 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [email, setEmail] = React.useState<string>("sethamishi0512@gmail.com");
-  const [password, setPassword] = React.useState<string>("Doll@2107");
-  const [name, setName] = React.useState<string>("Amishi Seth");
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [name, setName] = React.useState<string>("");
 
 
 
@@ -81,7 +81,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             <Input
               id="password"
               type="password"
-              placeholder="name12712"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
