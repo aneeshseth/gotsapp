@@ -26,10 +26,16 @@ export default function AuthenticationPage() {
           <img src="https://favicon.twenty.com/github.com" className="h-12" />
         </Link>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 flex items-center bg-opacity-0">
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl ml-10 mr-3">
-              gotsapp: a chatting infrastructure.
-            </h1>
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 flex items-center bg-opacity-0 flex-col justify-center">
+            <div>
+            <b>sample email:</b> sethamishi0512@gmail.com
+            </div>
+            <div>
+            <b>sample password:</b> Doll@2107
+            </div>
+            <div>
+            <b>sample name:</b>  Amishi Seth
+            </div>
           </div>
         </div>
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 max-w-96">
